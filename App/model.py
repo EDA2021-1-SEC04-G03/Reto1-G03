@@ -37,12 +37,41 @@ los mismos.
 
 # Construccion de modelos
 
+
+def newCatalog():
+    """
+    Inicializa el catálogo de videos.
+    """
+    catalog = {'videos': None,
+               'category_id': None}
+
+    catalog['videos'] = lt.newList('ARRAY_LIST')
+    catalog['category_id'] = lt.newList('ARRAY_LIST')
+
+    return catalog
+
+
 # Funciones para agregar informacion al catalogo
+
+def addVideo(catalog, video):
+    # Se adiciona un video a la lista de videos
+    lt.addLast(catalog['videos'], video)
+
+def addCategory(catalog, category):
+    """
+    Adiciona una categoria a la lista de categorias
+    """
+    category_fixed=category['id\tname'].replace('\t','').split(" ",1)
+    c = newCategory(category_fixed[1], category_fixed[0])
+    lt.addLast(catalog['category_id'], c)
 
 # Funciones para creacion de datos
 
-# Funciones de consulta
-
-# Funciones utilizadas para comparar elementos dentro de una lista
-
-# Funciones de ordenamiento
+def newCategory(name, id):
+    """
+    Esta estructura almancena las categorias utilizados para marcar videos.
+    """
+    category = {'name': '', 'id': ''}
+    category['name'] = name
+    category['id'] = id
+    return category
