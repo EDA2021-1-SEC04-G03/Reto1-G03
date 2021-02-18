@@ -71,7 +71,7 @@ while True:
         firstVid = lt.firstElement(catalog['videos'])
         print('\nPrimer video: ',
         "\nTitulo:",firstVid['title'], "\nCanal:",firstVid['channel_title'], "\nFecha trending:",firstVid['trending_date'],
-        "\nPais:",firstVid['country'], "\nViews:",firstVid['views'], "\nLikes:",firstVid['likes'], "\nDisliked:",firstVid['dislikes'])
+        "\nPais:",firstVid['country'], "\nViews:",firstVid['views'], "\nLikes:",firstVid['likes'], "\nDislikes:",firstVid['dislikes'])
 
         elements = catalog['category_id']['elements']
         print('\nCategorias cargadas: ')
