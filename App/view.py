@@ -73,7 +73,10 @@ while True:
         "\nTitulo:",firstVid['title'], "\nCanal:",firstVid['channel_title'], "\nFecha trending:",firstVid['trending_date'],
         "\nPais:",firstVid['country'], "\nViews:",firstVid['views'], "\nLikes:",firstVid['likes'], "\nDisliked:",firstVid['dislikes'])
 
-        print('\nCategorias cargadas: ' + str(catalog['category_id']['elements']))
+        elements = catalog['category_id']['elements']
+        print('\nCategorias cargadas: ')
+        for i in elements:
+            print("Nombre:",i['name'],"--- Id:",i['id'])
 
     elif int(inputs[0]) == 2:
         #Req 1
