@@ -62,13 +62,18 @@ while True:
     if int(inputs[0]) == 1:
         #Cargar archivos
 
-        file_name = input("Nombre del archivo:")
         print("Cargando información de los archivos ....")
         catalog = controller.initCatalog()
-        catalog = controller.loadData(catalog)
-        print(catalog)
-        print("Done")
+        controller.loadData(catalog)
 
+        print('Videos cargados: ' + str(lt.size(catalog['videos'])))
+
+        firstVid = lt.firstElement(catalog['videos'])
+        print('\nPrimer video: ',
+        "\nTitulo:",firstVid['title'], "\nCanal:",firstVid['channel_title'], "\nFecha trending:",firstVid['trending_date'],
+        "\nPais:",firstVid['country'], "\nViews:",firstVid['views'], "\nLikes:",firstVid['likes'], "\nDisliked:",firstVid['dislikes'])
+
+        print('\nCategorias cargadas: ' + str(catalog['category_id']['elements']))
 
     elif int(inputs[0]) == 2:
         #Req 1
@@ -77,7 +82,7 @@ while True:
         country = int(input("País: "))
         category = int(input("Categoría: "))
         print("Cargando...")
-        #function bla bla
+        #funcion aqui
 
     elif int(inputs[0]) == 3:
         #Req 2
