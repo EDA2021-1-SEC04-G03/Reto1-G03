@@ -49,7 +49,58 @@ def printMenu():
     print("0- Salir")
     printLine()
 
+def printMenuTAD():
+    print("Seleccione el tipo de lista que quiere crear:")
+    print("1- Array list")
+    print("2- Linked list")
 
+def obtenerTipoLista():
+    iterate=True
+    while iterate:
+        printMenuTAD()
+        inputs = input('Seleccione una opción para continuar\n')
+        if int(inputs[0]) == 1:
+            tipo_lista='ARRAY_LIST'
+            iterate=False
+        elif int(inputs[0]) == 2:
+            tipo_lista='LINKED_LIST'
+            iterate=False
+    return tipo_lista
+
+def printMenuSort():
+    print("Seleccione el tipo de ordanamiento que quiere usar:")
+    print("1- Selection")
+    print("2- Insertion")
+    print("3- Shell")
+
+def obtenerTipoOrdenamiento():
+    iterate=True
+    while iterate:
+        printMenuSort()
+        inputs = input('Seleccione una opción para continuar\n')
+        if int(inputs[0]) == 1:
+            tipo_ord='selection'
+            iterate=False
+        elif int(inputs[0]) == 2:
+            tipo_ord='insertion'
+            iterate=False
+        elif int(inputs[0]) == 3:
+            tipo_ord='shell'
+            iterate=False
+    return tipo_ord
+
+def initCatalog(tipo_lista):
+    """
+    Inicializa el catalogo de libros
+    """
+    return controller.initCatalog(tipo_lista)
+
+
+def loadData(catalog):
+    """
+    Carga los libros en la estructura de datos
+    """
+    controller.loadData(catalog)
 
 catalog = None
 
@@ -61,10 +112,10 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         #Cargar archivos
-
+        tipo_lista=obtenerTipoLista()
         print("Cargando información de los archivos ....")
-        catalog = controller.initCatalog()
-        controller.loadData(catalog)
+        catalog = initCatalog(tipo_lista)
+        loadData(catalog)
 
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
 
@@ -73,19 +124,19 @@ while True:
         "\nTitulo:",firstVid['title'], "\nCanal:",firstVid['channel_title'], "\nFecha trending:",firstVid['trending_date'],
         "\nPais:",firstVid['country'], "\nViews:",firstVid['views'], "\nLikes:",firstVid['likes'], "\nDisliked:",firstVid['dislikes'])
 
-        elements = catalog['category_id']['elements']
         print('\nCategorias cargadas: ')
-        for i in elements:
+        for i in lt.iterator(catalog['category_id']):
             print("Nombre:",i['name'],"--- Id:",i['id'])
 
     elif int(inputs[0]) == 2:
         #Req 1
-
-        videos = int(input("Cuantos videos: "))
-        country = int(input("País: "))
-        category = int(input("Categoría: "))
-        print("Cargando...")
-        #funcion aqui
+        size=0
+        while size<1 or size>lt.size(catalog['videos']):
+            size = int(input("Indique tamaño de la muestra: "))
+        tipo_ord=obtenerTipoOrdenamiento()
+        result = controller.sortBooks(catalog, int(size),tipo_ord)
+        print("Para la muestra de", size, " elementos, el tiempo (mseg) es: ",
+                                    str(result[0]))
 
     elif int(inputs[0]) == 3:
         #Req 2

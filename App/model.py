@@ -26,7 +26,10 @@
 
 
 import config as cf
+import time
 from DISClib.ADT import list as lt
+from DISClib.Algorithms.Sorting import selectionsort as ss
+from DISClib.Algorithms.Sorting import insertionsort as si
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
 
@@ -38,15 +41,16 @@ los mismos.
 # Construccion de modelos
 
 
-def newCatalog():
+def newCatalog(tipo_lista):
     """
     Inicializa el catálogo de videos.
     """
     catalog = {'videos': None,
                'category_id': None}
 
-    catalog['videos'] = lt.newList('ARRAY_LIST')
-    catalog['category_id'] = lt.newList('ARRAY_LIST')
+    catalog['videos'] = lt.newList(tipo_lista,
+                            cmpfunction=cmpVideosByViews)
+    catalog['category_id'] = lt.newList(tipo_lista)
 
     return catalog
 
@@ -75,3 +79,29 @@ def newCategory(name, id):
     category['name'] = name
     category['id'] = id
     return category
+
+# Funciones utilizadas para comparar elementos dentro de una lista
+
+def cmpVideosByViews(video1, video2):
+    """ Devuelve verdadero (True) si los 'views' de video1 son menores que los del video2
+    Args:
+        video1: informacion del primer video que incluye su valor 'views'
+        video2: informacion del segundo video que incluye su valor 'views'
+    """
+    return (float(video1['views']) < float(video2['views']))
+
+# Funciones de ordenamiento
+
+def sortBooks(catalog, size, tipo_ord):
+    sub_list = lt.subList(catalog['videos'], 0, size)
+    sub_list = sub_list.copy()
+    start_time = time.process_time()
+    if tipo_ord=='selection':
+        sorted_list = ss.sort(sub_list, cmpVideosByViews)
+    if tipo_ord=='insertion':
+        sorted_list = si.sort(sub_list, cmpVideosByViews)
+    if tipo_ord=='shell':
+        sorted_list = sa.sort(sub_list, cmpVideosByViews)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000 
+    return elapsed_time_mseg, sorted_list
