@@ -113,7 +113,7 @@ while True:
     if int(inputs[0]) == 1:
         #Cargar archivos
         tipo_lista=obtenerTipoLista()
-        print("Cargando información de los archivos ....")
+        print("Cargando información de los archivos...")
         catalog = initCatalog(tipo_lista)
         loadData(catalog)
 
@@ -134,10 +134,10 @@ while True:
         while size<1 or size>lt.size(catalog['videos']):
             size = int(input("Indique tamaño de la muestra: "))
         tipo_ord=obtenerTipoOrdenamiento()
-        result = controller.sortBooks(catalog, int(size),tipo_ord)
+        print("Ordenando datos...")
+        result = controller.sortVideos(catalog, int(size),tipo_ord)
         print("Para la muestra de", size, " elementos, el tiempo (mseg) es: ",
                                     str(result[0]))
-
     elif int(inputs[0]) == 3:
         #Req 2
 
