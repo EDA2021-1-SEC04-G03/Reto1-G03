@@ -26,7 +26,6 @@ import controller
 from DISClib.ADT import list as lt
 assert cf
 
-
 """
 La vista se encarga de la interacción con el usuario
 Presenta el menu de opciones y por cada seleccion
@@ -112,6 +111,8 @@ def loadData(catalog):
     controller.loadData(catalog)
 
 catalog = None
+default_limit = 1000
+sys.setrecursionlimit(default_limit*10)
 
 """
 Menu principal
