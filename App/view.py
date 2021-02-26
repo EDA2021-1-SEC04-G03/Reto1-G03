@@ -72,6 +72,9 @@ def printMenuSort():
     print("1- Selection")
     print("2- Insertion")
     print("3- Shell")
+    print("4- Merge")
+    print("5- Quick")
+
 
 def obtenerTipoOrdenamiento():
     iterate=True
@@ -86,6 +89,12 @@ def obtenerTipoOrdenamiento():
             iterate=False
         elif int(inputs[0]) == 3:
             tipo_ord='shell'
+            iterate=False
+        elif int(inputs[0]) == 4:
+            tipo_ord='merge'
+            iterate=False
+        elif int(inputs[0]) == 5:
+            tipo_ord='quick'
             iterate=False
     return tipo_ord
 
