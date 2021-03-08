@@ -74,6 +74,9 @@ def loadCategory(catalog):
 #Funciones de filtración
 
 def filterVideos(catalog, fields, criterias):
+    """
+    Filtra los videos basados en un criterio para cada campo
+    """
     return model.filterVideos(catalog, fields,criterias)
 
 

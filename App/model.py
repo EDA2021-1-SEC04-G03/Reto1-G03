@@ -114,6 +114,14 @@ def findCatIDbyName (catalog,fields, criterias):
     return
 
 def filterVideos(catalog, fields, criterias):
+    """ Filtra los videos basados en sus campos y en los valores aceptados por los mismos.
+    Si fields es (field1, field2) y criterias es (criteria1, criteria2) entonces la función retornará
+    una lista en la que sólo field1 tenga el valor criteria1, y así sucesivamente.
+    Args:
+        fields(list): campos usados para la filtración
+        criterias(list): valores posibles para los campos
+    """
+
     newCatalog = {'videos': None}
 
     newCatalog['videos'] = lt.newList('ARRAY_LIST',
