@@ -27,6 +27,7 @@
 
 import config as cf
 import time
+from datetime import datetime
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import selectionsort as ss
 from DISClib.Algorithms.Sorting import insertionsort as si
@@ -90,7 +91,15 @@ def cmpVideosByViews(video1, video2):
         video1: informacion del primer video que incluye su valor 'views'
         video2: informacion del segundo video que incluye su valor 'views'
     """
-    return (video1['views'] > video2['views'])
+    return (int(video1['views']) > int(video2['views']))
+
+def cmpVideosByTitle(video1, video2):
+    """ Devuelve verdadero (True) si los 'views' de video1 son menores que los del video2
+    Args:
+        video1: informacion del primer video que incluye su valor 'views'
+        video2: informacion del segundo video que incluye su valor 'views'
+    """
+    return (video1['title']) < (video2['title'])
 
 #Funciones de filtración
 
@@ -125,34 +134,36 @@ def filterVideos(catalog, fields, criterias):
 
 # Funciones de ordenamiento
 
-def sortVideos(catalog, size, tipo_ord):
-    #print(catalog['videos'])
-    sub_list = catalog['videos'].copy()
-    start_time = time.process_time()
-    if tipo_ord=='selection':
-        sorted_list = ss.sort(catalog['videos'], cmpVideosByViews)
-    elif tipo_ord=='insertion':
-        sorted_list = si.sort(catalog['videos'], cmpVideosByViews)
-    elif tipo_ord=='shell':
-        sorted_list = sa.sort(catalog['videos'], cmpVideosByViews)
-    elif tipo_ord=='merge':
+def getTopVideoByTrendingDate(catalog):
+    tempElement=lt.firstElement(catalog)
+    topElemento=None
+    contTopElement=0
+    contador=0
+    
+    for elemento in lt.iterator(catalog):
+        if elemento['video_id']==tempElement['video_id']:
+            contador+=1
+        else:
+            if contador>contTopElement:
+                topElemento=tempElement
+                contTopElement=contador
+            contador=1
+            tempElement=elemento
+    
+    if contador>contTopElement:
+        topElemento=tempElement
+        contTopElement=contador
+
+    return (topElemento,contTopElement)
+
+def sortVideos(catalog, size, criteria):
+
+    if criteria=='views':
         sorted_list = ms.sort(catalog['videos'], cmpVideosByViews)
-    elif tipo_ord=='quick':
-        sorted_list = qs.sort(catalog['videos'], cmpVideosByViews)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000 
+    elif criteria=='title':
+        sorted_list = ms.sort(catalog['videos'], cmpVideosByTitle)
 
-    print('Numero videos')
-    print(lt.size(catalog['videos']))
+    if criteria=='views':
+        sorted_list = lt.subList(sorted_list, 1, size)
 
-    '''print("trending_date | title | channel_title | publish_time | views | likes | dislikes")
-    for i in lt.iterator(sorted_list):
-        print(i['trending_date'],'|',i['title'],'|',i['channel_title'],'|',
-        i['publish_time'],'|',i['views'],'|',i['likes'],'|',i['dislikes'])'''
-
-    print('hols')
-
-    sorted_list = lt.subList(sorted_list, 0, size)
-
-
-    return elapsed_time_mseg, sorted_list
+    return sorted_list

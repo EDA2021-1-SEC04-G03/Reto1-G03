@@ -79,8 +79,14 @@ def filterVideos(catalog, fields, criterias):
 
 # Funciones de ordenamiento
 
-def sortVideos(catalog, size, tipo_ord):
+def sortVideos(catalog, size, criteria):
     """
     Ordena los libros por average_rating
     """
-    return model.sortVideos(catalog, size,tipo_ord)
+    return model.sortVideos(catalog, size, criteria)
+
+def getTopVideoByTrendingDate(catalog):
+    """
+    Ordena los libros por average_rating
+    """
+    return model.getTopVideoByTrendingDate(catalog)

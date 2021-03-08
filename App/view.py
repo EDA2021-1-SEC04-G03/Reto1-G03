@@ -122,7 +122,6 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         #Cargar archivos
-        #tipo_lista=obtenerTipoLista()
         tipo_lista='ARRAY_LIST'
         print("Cargando información de los archivos...")
         catalog = initCatalog(tipo_lista)
@@ -147,31 +146,35 @@ while True:
         
         filteredList = controller.filterVideos(catalog, ['category_id','country'],[category_name,country])
 
-        '''for i in lt.iterator(filteredList['videos']):
-            print(i['trending_date'],'|',i['title'],'|',i['channel_title'],'|',
-            i['publish_time'],'|',i['views'],'|',i['likes'],'|',i['dislikes'])'''
-
         while size<1 or size>lt.size(filteredList['videos']):
             size = int(input("Indique el número de videos a listar: "))
-        
-        #tipo_ord=obtenerTipoOrdenamiento()
-        tipo_ord='merge'
-        print("Ordenando datos...")
-        result = controller.sortVideos(filteredList, int(size),tipo_ord)
 
-        print('Videos top {} para {} bajo la categoría {}:'.format(size,country,category_name))
+        print("Ordenando datos...\n")
+        result = controller.sortVideos(filteredList, size, 'views')
+
+        print('Videos top {} para {} bajo la categoría {}:\n'.format(size,country,category_name))
 
         print("trending_date | title | channel_title | publish_time | views | likes | dislikes")
-        for i in lt.iterator(result[1]):
+        for i in lt.iterator(result):
             print(i['trending_date'],'|',i['title'],'|',i['channel_title'],'|',
             i['publish_time'],'|',i['views'],'|',i['likes'],'|',i['dislikes'])
 
     elif int(inputs[0]) == 3:
         #Req 2
+        size=1
+        country = input("Indique el país de los videos a consultar: ")
+        
+        filteredList = controller.filterVideos(catalog, ['country'],[country])
 
-        country = int(input("País: "))
-        print("Cargando...")
-        #funcion aqui
+        print("Ordenando datos...\n")
+        organizedList = controller.sortVideos(filteredList, None, 'title')
+
+        result = controller.getTopVideoByTrendingDate(organizedList)
+
+        print('El video top trending para {} es:\n'.format(country))
+        
+        print("title | channel_title | country | Días")
+        print(result[0]['title'],'|',result[0]['channel_title'],'|',result[0]['country'],'|',result[1])
 
     elif int(inputs[0]) == 4:
         #Req 3
