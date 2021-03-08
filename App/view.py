@@ -122,7 +122,8 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         #Cargar archivos
-        tipo_lista=obtenerTipoLista()
+        #tipo_lista=obtenerTipoLista()
+        tipo_lista='ARRAY_LIST'
         print("Cargando información de los archivos...")
         catalog = initCatalog(tipo_lista)
         loadData(catalog)
@@ -141,13 +142,30 @@ while True:
     elif int(inputs[0]) == 2:
         #Req 1
         size=0
-        while size<1 or size>lt.size(catalog['videos']):
-            size = int(input("Indique tamaño de la muestra: "))
-        tipo_ord=obtenerTipoOrdenamiento()
+        category_name = input("Indique la categoría de los videos a consultar: ")
+        country = input("Indique el país de los videos a consultar: ")
+        
+        filteredList = controller.filterVideos(catalog, ['category_id','country'],[category_name,country])
+
+        '''for i in lt.iterator(filteredList['videos']):
+            print(i['trending_date'],'|',i['title'],'|',i['channel_title'],'|',
+            i['publish_time'],'|',i['views'],'|',i['likes'],'|',i['dislikes'])'''
+
+        while size<1 or size>lt.size(filteredList['videos']):
+            size = int(input("Indique el número de videos a listar: "))
+        
+        #tipo_ord=obtenerTipoOrdenamiento()
+        tipo_ord='merge'
         print("Ordenando datos...")
-        result = controller.sortVideos(catalog, int(size),tipo_ord)
-        print("Para la muestra de", size, " elementos, el tiempo (mseg) es: ",
-                                    str(result[0]))
+        result = controller.sortVideos(filteredList, int(size),tipo_ord)
+
+        print('Videos top {} para {} bajo la categoría {}:'.format(size,country,category_name))
+
+        print("trending_date | title | channel_title | publish_time | views | likes | dislikes")
+        for i in lt.iterator(result[1]):
+            print(i['trending_date'],'|',i['title'],'|',i['channel_title'],'|',
+            i['publish_time'],'|',i['views'],'|',i['likes'],'|',i['dislikes'])
+
     elif int(inputs[0]) == 3:
         #Req 2
 

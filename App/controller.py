@@ -71,6 +71,12 @@ def loadCategory(catalog):
     for category in input_file:
         model.addCategory(catalog, category)
 
+#Funciones de filtración
+
+def filterVideos(catalog, fields, criterias):
+    return model.filterVideos(catalog, fields,criterias)
+
+
 # Funciones de ordenamiento
 
 def sortVideos(catalog, size, tipo_ord):

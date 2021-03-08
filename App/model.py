@@ -90,24 +90,69 @@ def cmpVideosByViews(video1, video2):
         video1: informacion del primer video que incluye su valor 'views'
         video2: informacion del segundo video que incluye su valor 'views'
     """
-    return (video1['views'] < video2['views'])
+    return (video1['views'] > video2['views'])
+
+#Funciones de filtración
+
+def findCatIDbyName (catalog,fields, criterias):
+    for i in range(len(fields)):
+        if fields[i]=='category_id':
+            for category in lt.iterator(catalog['category_id']):
+                if category['name']==criterias[i]:
+                    criterias[i]=category['id']
+                    break
+    
+    return
+
+def filterVideos(catalog, fields, criterias):
+    newCatalog = {'videos': None}
+
+    newCatalog['videos'] = lt.newList('ARRAY_LIST',
+                            cmpfunction=cmpVideosByViews)
+
+    findCatIDbyName(catalog, fields, criterias)
+
+    for video in lt.iterator(catalog['videos']):
+        add=True
+        for i in range(len(fields)):
+            if video[fields[i]] != criterias[i]:
+                add=False
+                break
+        if add:
+            lt.addLast(newCatalog['videos'], video)
+
+    return newCatalog
 
 # Funciones de ordenamiento
 
 def sortVideos(catalog, size, tipo_ord):
-    sub_list = lt.subList(catalog['videos'], 0, size)
-    sub_list = sub_list.copy()
+    #print(catalog['videos'])
+    sub_list = catalog['videos'].copy()
     start_time = time.process_time()
     if tipo_ord=='selection':
-        sorted_list = ss.sort(sub_list, cmpVideosByViews)
+        sorted_list = ss.sort(catalog['videos'], cmpVideosByViews)
     elif tipo_ord=='insertion':
-        sorted_list = si.sort(sub_list, cmpVideosByViews)
+        sorted_list = si.sort(catalog['videos'], cmpVideosByViews)
     elif tipo_ord=='shell':
-        sorted_list = sa.sort(sub_list, cmpVideosByViews)
+        sorted_list = sa.sort(catalog['videos'], cmpVideosByViews)
     elif tipo_ord=='merge':
-        sorted_list = ms.sort(sub_list, cmpVideosByViews)
+        sorted_list = ms.sort(catalog['videos'], cmpVideosByViews)
     elif tipo_ord=='quick':
-        sorted_list = qs.sort(sub_list, cmpVideosByViews)
+        sorted_list = qs.sort(catalog['videos'], cmpVideosByViews)
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000 
+
+    print('Numero videos')
+    print(lt.size(catalog['videos']))
+
+    '''print("trending_date | title | channel_title | publish_time | views | likes | dislikes")
+    for i in lt.iterator(sorted_list):
+        print(i['trending_date'],'|',i['title'],'|',i['channel_title'],'|',
+        i['publish_time'],'|',i['views'],'|',i['likes'],'|',i['dislikes'])'''
+
+    print('hols')
+
+    sorted_list = lt.subList(sorted_list, 0, size)
+
+
     return elapsed_time_mseg, sorted_list
