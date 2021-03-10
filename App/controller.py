@@ -93,3 +93,12 @@ def getTopVideoByTrendingDate(catalog):
     Ordena los libros por average_rating
     """
     return model.getTopVideoByTrendingDate(catalog)
+
+def trendingByCategory(catalog, category):
+    '''
+    Retorna el video mas trending en una categoria
+    '''
+    category_id = model.categoryToId(catalog,category)
+    if(category_id == None):
+        return None
+    return model.trendingByCategory(catalog,category_id)

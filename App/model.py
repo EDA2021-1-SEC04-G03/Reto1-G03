@@ -175,3 +175,29 @@ def sortVideos(catalog, size, criteria):
         sorted_list = lt.subList(sorted_list, 1, size)
 
     return sorted_list
+
+def categoryToId(catalog,category):
+    '''
+    Convierte del nombre de la categoria al category_id
+    '''
+    id = None
+    category = category.title()
+    for i in lt.iterator(catalog['category_id']):
+        if(i['name'] == category):
+            id = i['id']
+            break
+    return id
+
+def trendingByCategory(catalog, category):
+    '''
+    Busca el video que mas ha sido trending en una categoria
+    '''
+    filteredList = filterVideos(catalog, ['category_id'],[category])
+    organizedList = sortVideos(filteredList, None, 'title')
+    if(organizedList['size'] == 0):
+        #para manejar una lista vacia
+        print("Empty list")
+        return None
+    topVid = getTopVideoByTrendingDate(organizedList)
+    return topVid
+            

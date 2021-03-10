@@ -179,8 +179,14 @@ while True:
     elif int(inputs[0]) == 4:
         #Req 3
 
-        category = int(input("Categoría: "))
+        category = input("Categoría: ")
         print("Cargando...")
+        result = controller.trendingByCategory(catalog,category)
+        if(result == None):
+            print("error")
+        else:
+            print("title | channel_title | Category ID | Días")
+            print(result[0]['title'],'|',result[0]['channel_title'],'|',result[0]['category_id'],'|',result[1])
         #funcion aqui
 
     elif int(inputs[0]) == 5:
