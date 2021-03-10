@@ -94,12 +94,20 @@ def cmpVideosByViews(video1, video2):
     return (int(video1['views']) > int(video2['views']))
 
 def cmpVideosByTitle(video1, video2):
-    """ Devuelve verdadero (True) si los 'views' de video1 son menores que los del video2
+    """ Devuelve verdadero (True) si los 'title' de video1 son menores que los del video2
     Args:
-        video1: informacion del primer video que incluye su valor 'views'
-        video2: informacion del segundo video que incluye su valor 'views'
+        video1: informacion del primer video que incluye su valor 'title'
+        video2: informacion del segundo video que incluye su valor 'title'
     """
     return (video1['title']) < (video2['title'])
+
+def cmpVideosByLikes(video1, video2):
+    """ Devuelve verdadero (True) si los 'likes' de video1 son menores que los del video2
+    Args:
+        video1: informacion del primer video que incluye su valor 'likes'
+        video2: informacion del segundo video que incluye su valor 'likes'
+    """
+    return (int(video1['likes']) > int(video2['likes']))
 
 #Funciones de filtración
 
@@ -170,8 +178,10 @@ def sortVideos(catalog, size, criteria):
         sorted_list = ms.sort(catalog['videos'], cmpVideosByViews)
     elif criteria=='title':
         sorted_list = ms.sort(catalog['videos'], cmpVideosByTitle)
+    elif criteria == 'likes':
+        sorted_list = ms.sort(catalog['videos'], cmpVideosByLikes)
 
-    if criteria=='views':
+    if criteria=='views' or criteria=='likes':
         sorted_list = lt.subList(sorted_list, 1, size)
 
     return sorted_list
@@ -200,4 +210,21 @@ def trendingByCategory(catalog, category):
         return None
     topVid = getTopVideoByTrendingDate(organizedList)
     return topVid
+
+def searchByTagAndCountry (catalog, tag, country):
+    '''
+    Igual que filteredList pero para tags
+    '''
+    newCatalog = {'videos': None}
+
+    newCatalog['videos'] = lt.newList('ARRAY_LIST',
+                            cmpfunction=cmpVideosByViews)
+
+    #findCatIDbyName(catalog, fields, criterias) no se si necesito esto
+
+    for video in lt.iterator(catalog['videos']):
+        if ((tag in video['tags']) and (video['country'] == country)):
+            lt.addLast(newCatalog['videos'], video)
+    
+    return newCatalog
             

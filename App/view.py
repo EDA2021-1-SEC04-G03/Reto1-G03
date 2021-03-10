@@ -187,16 +187,23 @@ while True:
         else:
             print("title | channel_title | Category ID | Días")
             print(result[0]['title'],'|',result[0]['channel_title'],'|',result[0]['category_id'],'|',result[1])
-        #funcion aqui
 
     elif int(inputs[0]) == 5:
         #Req 4
-
+        #Buscar por un tag especifico
+        country = input("Pais: ")
         videos = int(input("Cuantos videos: "))
         tag = input("Tag: ")
         print("Cargando...")
-        #funcion aqui
+        result = controller.searchByTag(catalog,videos,tag,country)
+        print("done")
+        print('Los {} video(s) con mas likes para {} tag en {} es:\n'.format(videos, tag, country))
+        for i in result['elements']:
+            print("title | channel_title | Dia de publicacion | views | likes | dislikes | tags")
+            print(i['title'],'|',i['channel_title'],'|',i['publish_time'],'|',i['views'],'|', 
+                  i['likes'],'|',i['dislikes'],'|',i['tags'].split('|'))
 
+        #print(result['elements'])
     else:
         print("Adios!")
         sys.exit(0)

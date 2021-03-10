@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from os import stat_result
 import config as cf
 import model
 import csv
@@ -102,3 +103,12 @@ def trendingByCategory(catalog, category):
     if(category_id == None):
         return None
     return model.trendingByCategory(catalog,category_id)
+
+def searchByTag(catalog, videos, tag, country):
+    '''
+    Busca N videos con un tag especifico en un pais
+    '''
+    tag = '"'+tag+'"'
+    vids = model.searchByTagAndCountry(catalog, tag, country)
+    result = model.sortVideos(vids,videos,'likes')
+    return result
