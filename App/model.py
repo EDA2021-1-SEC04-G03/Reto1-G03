@@ -203,12 +203,12 @@ def trendingByCategory(catalog, category):
     Busca el video que mas ha sido trending en una categoria
     '''
     filteredList = filterVideos(catalog, ['category_id'],[category])
-    organizedList = sortVideos(filteredList, None, 'title')
-    if(organizedList['size'] == 0):
+    orderedList = sortVideos(filteredList, None, 'title')
+    if(orderedList['size'] == 0):
         #para manejar una lista vacia
         print("Empty list")
         return None
-    topVid = getTopVideoByTrendingDate(organizedList)
+    topVid = getTopVideoByTrendingDate(orderedList)
     return topVid
 
 def searchByTagAndCountry (catalog, tag, country):
@@ -219,8 +219,6 @@ def searchByTagAndCountry (catalog, tag, country):
 
     newCatalog['videos'] = lt.newList('ARRAY_LIST',
                             cmpfunction=cmpVideosByViews)
-
-    #findCatIDbyName(catalog, fields, criterias) no se si necesito esto
 
     for video in lt.iterator(catalog['videos']):
         if ((tag in video['tags']) and (video['country'] == country)):
